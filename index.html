@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Upload & Download</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #111, #292929);
+  color: white;
+}
+
+.container {
+  width: 92%;
+  max-width: 500px;
+  padding: 30px;
+  text-align: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 25px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+p {
+  color: #bbb;
+}
+
+.upload-box {
+  margin: 25px 0;
+  padding: 30px;
+  border: 2px dashed #777;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+.upload-box:hover {
+  border-color: white;
+}
+
+input {
+  display: none;
+}
+
+#preview {
+  display: none;
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  margin-top: 20px;
+  border-radius: 15px;
+}
+
+button {
+  display: none;
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>📸 Photo Upload</h1>
+  <p>Upload your photo and download it</p>
+
+  <label class="upload-box" for="photoInput">
+    <div style="font-size:45px;">📁</div>
+    <strong>Click here to upload photo</strong>
+    <br><br>
+    <small>JPG / PNG / WEBP</small>
+  </label>
+
+  <input type="file" id="photoInput" accept="image/*">
+
+  <img id="preview">
+
+  <button id="downloadBtn">⬇️ Download Photo</button>
+
+</div>
+
+<script>
+
+const input = document.getElementById("photoInput");
+const preview = document.getElementById("preview");
+const downloadBtn = document.getElementById("downloadBtn");
+
+let imageURL = "";
+
+input.addEventListener("change", function() {
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select an image.");
+    return;
+  }
+
+  imageURL = URL.createObjectURL(file);
+
+  preview.src = imageURL;
+  preview.style.display = "block";
+  downloadBtn.style.display = "block";
+
+});
+
+downloadBtn.addEventListener("click", function() {
+
+  if (!imageURL) return;
+
+  const link = document.createElement("a");
+
+  link.href = imageURL;
+  link.download = "my-photo";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+});
+
+</script>
+
+</body>
+</html>
